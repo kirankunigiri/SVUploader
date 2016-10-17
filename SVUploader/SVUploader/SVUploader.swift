@@ -24,10 +24,13 @@ class SVUploader: UIView {
     // The container view will hold all views inside the circle
     var containerView = UIView()
     var contentView = UIView()
+    var shadowView = UIView()
     var endView = UIView()
     var contentImageView = UIImageView()
     var endImageView = UIImageView()
     var overlayView = UIView()
+    var blurEffect = UIBlurEffect()
+    var blurView = UIVisualEffectView()
     var loadingLabel = UILabel()
     
     // Image assets
@@ -58,6 +61,17 @@ class SVUploader: UIView {
     /** Whether or not the uploader is currently uploading */
     var isUploading: Bool = false
     
+    /** The speed of the animation between progress value changes. This number should be changed depending on the length of intervals between each progress percentage update. For larger intervals, a lower speed is recommended for a smoother animation. For shorter intervals, a higher speed is recommended to prevent slow animation and lag. Default value = 1 */
+    var progressAnimationSpeed: Float = 2 {
+        didSet { circlePathLayer.speed = progressAnimationSpeed }
+    }
+    
+    /** Whether or not the uploader uses the blur effect. Private and set only by the constructor. */
+    private var useBlur: Bool = false
+    
+    /** Whether or not the uploader uses the shadow effect. Private and set only by the constructor. */
+    private var useShadow: Bool = false
+    
     /** The color of the circular loader */
     var lineColor = UIColor(red:0.40, green:0.47, blue:0.97, alpha:1.0) {
         didSet { circlePathLayer.strokeColor = lineColor.cgColor }
@@ -66,20 +80,6 @@ class SVUploader: UIView {
     /** The width of the circular loader */
     var lineWidth: CGFloat = 10 {
         didSet { circlePathLayer.lineWidth = lineWidth }
-    }
-    
-    /** The speed of the animation between progress value changes. This number should be changed depending on the length of intervals between each progress percentage update. For larger intervals, a lower speed is recommended for a smoother animation. For shorter intervals, a higher speed is recommended to prevent slow animation and lag. Default value = 1 */
-    var progressAnimationSpeed: Float = 2 {
-        didSet { circlePathLayer.speed = progressAnimationSpeed }
-    }
-    
-    /** Whether the stroke animate or instantly changes. Cannot be changed back to smooth if it is set to false */
-    var isSmoothAnimation: Bool = true {
-        didSet {
-            if !isSmoothAnimation {
-                circlePathLayer.actions = ["strokeEnd" : NSNull()]
-            }
-        }
     }
     
     /** The overlay opacity of the view during uploading */
@@ -133,12 +133,47 @@ class SVUploader: UIView {
         setup()
     }
     
+    init(lineColor: UIColor, lineWidth: CGFloat, useBlur: Bool, useShadow: Bool) {
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        
+        self.lineColor = lineColor
+        self.lineWidth = lineWidth
+        self.useBlur = useBlur
+        self.useShadow = useShadow
+        
+        setup()
+    }
+    
+    init(useBlur: Bool, useShadow: Bool, useSmoothAnimation: Bool) {
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        
+        self.useBlur = useBlur
+        self.useShadow = useShadow
+        if !useSmoothAnimation {
+            circlePathLayer.actions = ["strokeEnd" : NSNull()]
+        }
+        
+        setup()
+    }
+    
     func setup() {
-        // Add all views and layers
+        
+        // Blur
+        if useBlur {
+            blurEffect = UIBlurEffect(style: .dark)
+            blurView = UIVisualEffectView(effect: blurEffect)
+            blurView.alpha = 0
+            useBlur = false
+        }
+        
+        // Add all views and layers in order
         self.layer.addSublayer(circlePathLayer)
 
+        if useShadow { self.addSubview(shadowView) }
+        
         self.addSubview(containerView)
         containerView.addSubview(contentView)
+        if useBlur { containerView.addSubview(blurView) }
         containerView.addSubview(overlayView)
         containerView.addSubview(loadingLabel)
         containerView.addSubview(endView)
@@ -150,6 +185,7 @@ class SVUploader: UIView {
         contentImageView.contentMode = .scaleAspectFill
         
         contentImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        if useBlur { blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight] }
         for view in containerView.subviews {
             view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         }
@@ -192,7 +228,9 @@ class SVUploader: UIView {
         containerView.frame.center = containerView.superview!.bounds.center
         
         // Offset the image view
-        endImageView.frame = containerView.frame.insetBy(dx: 60, dy: 60)
+        let scale = (60.0/180.0)*containerView.frame.width
+        endImageView.frame = containerView.frame.insetBy(dx: scale, dy: scale)
+        print(containerView.frame.width)
         endImageView.frame.center = endImageView.superview!.bounds.center
         
         // Transform container view back into a circle
@@ -200,6 +238,16 @@ class SVUploader: UIView {
         
         // Scale font size
         mainFont = UIFont(name: mainFont.fontName, size: (30.0/150.0) * self.frame.width)!
+        
+        // Content shadow
+        if useShadow {
+            shadowView.layer.masksToBounds = false
+            shadowView.layer.shadowColor = UIColor.black.cgColor
+            shadowView.layer.shadowOpacity = 0.4
+            shadowView.layer.shadowOffset = CGSize.zero
+            shadowView.layer.shadowRadius = 6
+            shadowView.layer.shadowPath = UIBezierPath(ovalIn: containerView.frame).cgPath
+        }
     }
     
     
@@ -208,6 +256,7 @@ class SVUploader: UIView {
     // MARK: - Methods
     // ==============================================================================================
     
+    /** Starts the upload animation. You should now consistently update the progress property to advanced the animation. Use endUplad() when you are finished. */
     func startUpload() {
         // Set the initial properties
         isUploading = true
@@ -218,9 +267,11 @@ class SVUploader: UIView {
             self.circlePathLayer.isHidden = false
             self.overlayView.alpha = self.overlayOpacity
             self.loadingLabel.alpha = 1
+            self.blurView.alpha = 1
         }
     }
     
+    /** Ends the upload. Use the success parameter to specify whether the success or error view should be shown. */
     func endUpload(success: Bool, message: String) {
         // Set the initial properties
         isUploading = false
@@ -249,7 +300,7 @@ class SVUploader: UIView {
         // Shrink the path of the circle layer
         let anim = CABasicAnimation(keyPath: "path")
         anim.toValue = toPath
-        anim.duration = 1
+        anim.duration = 1.5
         anim.fillMode = kCAFillModeForwards
         anim.isRemovedOnCompletion = false
         circlePathLayer.add(anim, forKey: "path")
@@ -262,6 +313,7 @@ class SVUploader: UIView {
         }) { (completion) in
             UIView.animate(withDuration: 1, delay: 2, options: [], animations: {
                 self.overlayView.alpha = 0
+                self.blurView.alpha = 0
                 self.endView.alpha = 0
             }, completion: nil)
         }
