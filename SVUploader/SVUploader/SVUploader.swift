@@ -25,9 +25,14 @@ class SVUploader: UIView {
     var containerView = UIView()
     var contentView = UIView()
     var endView = UIView()
-    var imageView = UIImageView()
+    var contentImageView = UIImageView()
+    var endImageView = UIImageView()
     var overlayView = UIView()
     var loadingLabel = UILabel()
+    
+    // Image assets
+    var successImage = UIImage(named: "Check")
+    var errorImage = UIImage(named: "X")
     
     // The circle is separate and is outside the container view
     var circlePathLayer = CAShapeLayer()
@@ -36,10 +41,10 @@ class SVUploader: UIView {
     var image: UIImage? {
         didSet {
             if image != nil {
-                self.imageView.image = image
-                self.imageView.isHidden = false
+                self.contentImageView.image = image
+                self.contentImageView.isHidden = false
             } else {
-                self.imageView.isHidden = true
+                self.contentImageView.isHidden = true
             }
         }
     }
@@ -50,14 +55,31 @@ class SVUploader: UIView {
     // MARK: Variables
     // ==============================================================================================
     
+    /** Whether or not the uploader is currently uploading */
+    var isUploading: Bool = false
+    
     /** The color of the circular loader */
-    var lineColor = UIColor.red {
+    var lineColor = UIColor(red:0.40, green:0.47, blue:0.97, alpha:1.0) {
         didSet { circlePathLayer.strokeColor = lineColor.cgColor }
     }
     
     /** The width of the circular loader */
     var lineWidth: CGFloat = 10 {
         didSet { circlePathLayer.lineWidth = lineWidth }
+    }
+    
+    /** The speed of the animation between progress value changes. This number should be changed depending on the length of intervals between each progress percentage update. For larger intervals, a lower speed is recommended for a smoother animation. For shorter intervals, a higher speed is recommended to prevent slow animation and lag. Default value = 1 */
+    var progressAnimationSpeed: Float = 2 {
+        didSet { circlePathLayer.speed = progressAnimationSpeed }
+    }
+    
+    /** Whether the stroke animate or instantly changes. Cannot be changed back to smooth if it is set to false */
+    var isSmoothAnimation: Bool = true {
+        didSet {
+            if !isSmoothAnimation {
+                circlePathLayer.actions = ["strokeEnd" : NSNull()]
+            }
+        }
     }
     
     /** The overlay opacity of the view during uploading */
@@ -74,7 +96,10 @@ class SVUploader: UIView {
             return circlePathLayer.strokeEnd
         }
         set {
-            if (newValue > 1) {
+            if !isUploading {
+                return
+            }
+            if (newValue > 1.0) {
                 circlePathLayer.strokeEnd = 1
             } else if (newValue < 0) {
                 circlePathLayer.strokeEnd = 0
@@ -85,6 +110,13 @@ class SVUploader: UIView {
         }
     }
     
+    /** Set success to easily modify the endView properties */
+    private var success: Bool = true {
+        didSet {
+            if success { endImageView.image = successImage }
+            else { endImageView.image = errorImage }
+        }
+    }
     
     
     // ==============================================================================================
@@ -103,19 +135,21 @@ class SVUploader: UIView {
     
     func setup() {
         // Add all views and layers
+        self.layer.addSublayer(circlePathLayer)
+
         self.addSubview(containerView)
         containerView.addSubview(contentView)
         containerView.addSubview(overlayView)
         containerView.addSubview(loadingLabel)
         containerView.addSubview(endView)
-        contentView.addSubview(imageView)
-        self.layer.addSublayer(circlePathLayer)
+        contentView.addSubview(contentImageView)
+        endView.addSubview(endImageView)
         
         // View setup
         containerView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
+        contentImageView.contentMode = .scaleAspectFill
         
-        imageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        contentImageView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         for view in containerView.subviews {
             view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         }
@@ -130,6 +164,8 @@ class SVUploader: UIView {
         loadingLabel.alpha = 0
         
         // End view
+        endImageView.image = errorImage
+        endImageView.contentMode = .scaleAspectFit
         endView.alpha = 0
         
         // Circle Path Layer
@@ -138,10 +174,13 @@ class SVUploader: UIView {
         circlePathLayer.lineWidth = lineWidth
         circlePathLayer.strokeColor = lineColor.cgColor
         circlePathLayer.fillColor = UIColor.clear.cgColor
+        circlePathLayer.speed = progressAnimationSpeed
     }
     
     override func layoutSubviews() {
         super.layoutSubviews()
+        
+        // Important: To center a view, set its frame.center to superview!.bounds.center
         
         // Offset the ring by lineWidth/2
         self.circlePathLayer.frame = self.bounds
@@ -150,9 +189,13 @@ class SVUploader: UIView {
         
         // Offset the content view by lineWidth
         containerView.frame = self.frame.insetBy(dx: lineWidth, dy: lineWidth)
-        containerView.frame.center = self.bounds.center
+        containerView.frame.center = containerView.superview!.bounds.center
         
-        // Transform all views back into circles
+        // Offset the image view
+        endImageView.frame = containerView.frame.insetBy(dx: 60, dy: 60)
+        endImageView.frame.center = endImageView.superview!.bounds.center
+        
+        // Transform container view back into a circle
         containerView.transformToCircle()
         
         // Scale font size
@@ -166,18 +209,63 @@ class SVUploader: UIView {
     // ==============================================================================================
     
     func startUpload() {
+        // Set the initial properties
+        isUploading = true
         progress = 0
-        UIView.animate(withDuration: 0.5) { 
+        
+        // Animate the loading views in
+        UIView.animate(withDuration: 0.5) {
+            self.circlePathLayer.isHidden = false
             self.overlayView.alpha = self.overlayOpacity
             self.loadingLabel.alpha = 1
         }
     }
     
-    func endUpload(error: Bool, message: String) {
-        UIView.animate(withDuration: 0.5) { 
+    func endUpload(success: Bool, message: String) {
+        // Set the initial properties
+        isUploading = false
+        self.success = success
+
+        // Prepare the circle path for the animation
+        let originalPath = circlePathLayer.path
+        self.circlePathLayer.frame = self.bounds
+        let circleFrame = circlePathLayer.frame.insetBy(dx: lineWidth*2, dy: lineWidth*2)
+        let toPath = UIBezierPath(ovalIn: circleFrame).cgPath
+        
+        // Wrap animation in a CATransaction
+        CATransaction.begin()
+        // Use another CABasicAnimation in the completion block with a duration of 0 to change the frame back to the original, because changing the property itself does not work
+        CATransaction.setCompletionBlock {
+            let anim = CABasicAnimation(keyPath: "path")
+            anim.toValue = originalPath
+            anim.duration = 0
+            anim.fillMode = kCAFillModeForwards
+            anim.isRemovedOnCompletion = false
+            self.circlePathLayer.add(anim, forKey: "path")
+            self.circlePathLayer.isHidden = true
+            self.circlePathLayer.strokeEnd = 0
+        }
+        
+        // Shrink the path of the circle layer
+        let anim = CABasicAnimation(keyPath: "path")
+        anim.toValue = toPath
+        anim.duration = 1
+        anim.fillMode = kCAFillModeForwards
+        anim.isRemovedOnCompletion = false
+        circlePathLayer.add(anim, forKey: "path")
+        CATransaction.commit()
+        
+        // Animate the endView out and return to the original state
+        UIView.animate(withDuration: 1, animations: { 
             self.loadingLabel.alpha = 0
             self.endView.alpha = 1
+        }) { (completion) in
+            UIView.animate(withDuration: 1, delay: 2, options: [], animations: {
+                self.overlayView.alpha = 0
+                self.endView.alpha = 0
+            }, completion: nil)
         }
+        
     }
     
 }

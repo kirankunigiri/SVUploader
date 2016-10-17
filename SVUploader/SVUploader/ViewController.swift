@@ -26,12 +26,12 @@ class ViewController: UIViewController {
 
     @IBAction func uploadButtonPressed(_ sender: UIButton) {
         uploaderView.startUpload()
-        
         Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { (timer) in
-            self.uploaderView.progress += 0.003
+            self.uploaderView.progress += 0.006
+            print(self.uploaderView.progress)
             if self.uploaderView.progress == 1 {
-                self.uploaderView.endUpload(error: false, message: "Success!")
                 timer.invalidate()
+                self.uploaderView.endUpload(success: true, message: "Success!")
             }
         }
     }

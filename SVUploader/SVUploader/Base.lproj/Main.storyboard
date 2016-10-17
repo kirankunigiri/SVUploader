@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4gj-qD-IJt">
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="Upload"/>
                                 <connections>
                                     <action selector="uploadButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="mxX-9U-WPH"/>
                                 </connections>
