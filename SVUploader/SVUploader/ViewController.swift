@@ -12,13 +12,14 @@ class ViewController: UIViewController {
     
     var uploaderView: SVUploader!
     var percent = 0
+    var timer: Timer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let uploaderFrame = CGRect(x: 0, y: 0, width: 100, height: 100)
-//        uploaderView = SVUploader(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-        uploaderView = SVUploader(lineColor: UIColor.blue, lineWidth: 30, useBlur: true, useShadow: true)
+        uploaderView = SVUploader(frame: uploaderFrame)
+//        uploaderView = SVUploader(lineColor: UIColor.blue, lineWidth: 15, useBlur: true, useShadow: false)
         uploaderView.frame = uploaderFrame
         uploaderView.frame.size = CGSize(width: 200, height: 200)
         uploaderView.center = self.view.center
@@ -29,12 +30,14 @@ class ViewController: UIViewController {
 
     @IBAction func uploadButtonPressed(_ sender: UIButton) {
         uploaderView.startUpload()
-        Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { (timer) in
-            self.uploaderView.progress += 0.003
-            if self.uploaderView.progress == 1 {
-                timer.invalidate()
-                self.uploaderView.endUpload(success: true, message: "Success!")
-            }
+        timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(time), userInfo: nil, repeats: true)
+    }
+    
+    func time() {
+        self.uploaderView.progress += 0.003
+        if self.uploaderView.progress == 1 {
+            self.timer.invalidate()
+            self.uploaderView.endUpload(success: true, message: "Success!")
         }
     }
 

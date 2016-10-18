@@ -13,7 +13,6 @@
 		9F2CF37E1DB4606E00CA06FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F2CF37D1DB4606E00CA06FC /* Assets.xcassets */; };
 		9F2CF3811DB4606E00CA06FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9F2CF37F1DB4606E00CA06FC /* LaunchScreen.storyboard */; };
 		9F65C8FE1DB460AE00EA89E9 /* SVUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F65C8FD1DB460AE00EA89E9 /* SVUploader.swift */; };
-		9FE5887C1DB4A92000783E15 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9FE5887B1DB4A92000783E15 /* FXBlurView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,8 +25,6 @@
 		9F2CF3821DB4606E00CA06FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9F65C8FD1DB460AE00EA89E9 /* SVUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SVUploader.swift; sourceTree = "<group>"; };
 		9FE588711DB4A5EC00783E15 /* SVUploader-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SVUploader-Bridging-Header.h"; sourceTree = "<group>"; };
-		9FE5887A1DB4A92000783E15 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
-		9FE5887B1DB4A92000783E15 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,7 +57,6 @@
 		9F2CF3751DB4606E00CA06FC /* SVUploader */ = {
 			isa = PBXGroup;
 			children = (
-				9FE588791DB4A92000783E15 /* FXBlurView */,
 				9F2CF3761DB4606E00CA06FC /* AppDelegate.swift */,
 				9F2CF3781DB4606E00CA06FC /* ViewController.swift */,
 				9F65C8FD1DB460AE00EA89E9 /* SVUploader.swift */,
@@ -71,15 +67,6 @@
 				9FE588711DB4A5EC00783E15 /* SVUploader-Bridging-Header.h */,
 			);
 			path = SVUploader;
-			sourceTree = "<group>";
-		};
-		9FE588791DB4A92000783E15 /* FXBlurView */ = {
-			isa = PBXGroup;
-			children = (
-				9FE5887A1DB4A92000783E15 /* FXBlurView.h */,
-				9FE5887B1DB4A92000783E15 /* FXBlurView.m */,
-			);
-			path = FXBlurView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -114,6 +101,7 @@
 				TargetAttributes = {
 					9F2CF3721DB4606E00CA06FC = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = Y9Y96CV7VP;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
@@ -156,7 +144,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9F65C8FE1DB460AE00EA89E9 /* SVUploader.swift in Sources */,
-				9FE5887C1DB4A92000783E15 /* FXBlurView.m in Sources */,
 				9F2CF3791DB4606E00CA06FC /* ViewController.swift in Sources */,
 				9F2CF3771DB4606E00CA06FC /* AppDelegate.swift in Sources */,
 			);
@@ -282,7 +269,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = Y9Y96CV7VP;
 				INFOPLIST_FILE = SVUploader/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.SVUploader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -297,7 +286,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = Y9Y96CV7VP;
 				INFOPLIST_FILE = SVUploader/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = self.edu.SVUploader;
 				PRODUCT_NAME = "$(TARGET_NAME)";
