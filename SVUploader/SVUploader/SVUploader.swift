@@ -58,7 +58,7 @@ class SVUploader: UIView {
     // MARK: Variables
     // ==============================================================================================
     
-    /** Whether or not the uploader is currently uploading */
+    /** Whether or not the uploader is currently uploading. Read only. */
     var isUploading: Bool = false
     
     /** The speed of the animation between progress value changes. This number should be changed depending on the length of intervals between each progress percentage update. For larger intervals, a lower speed is recommended for a smoother animation. For shorter intervals, a higher speed is recommended to prevent slow animation and lag. Default value = 1 */
@@ -90,7 +90,10 @@ class SVUploader: UIView {
         didSet { loadingLabel.font = mainFont }
     }
     
-    /* The progress loader. Set the percentage of upload complete as a decimal to update the loader */
+    /** The duration of the message to be displayed at the end of the upload */
+    var messageDuration: Double = 2.0
+    
+    /* The progress percentage of the upload. Update this variable with a decimal to update the uploader */
     var progress: CGFloat {
         get {
             return circlePathLayer.strokeEnd
@@ -133,13 +136,22 @@ class SVUploader: UIView {
         setup()
     }
     
-    init(lineColor: UIColor, lineWidth: CGFloat, useBlur: Bool, useShadow: Bool) {
+    init(lineColor: UIColor, lineWidth: CGFloat) {
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         
         self.lineColor = lineColor
         self.lineWidth = lineWidth
-        self.useBlur = useBlur
-        self.useShadow = useShadow
+        
+        setup()
+    }
+    
+    init(lineColor: UIColor, lineWidth: CGFloat, overlayOpacity: CGFloat, mainFont: UIFont) {
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+        
+        self.lineColor = lineColor
+        self.lineWidth = lineWidth
+        self.overlayOpacity = overlayOpacity
+        self.mainFont = mainFont
         
         setup()
     }
@@ -230,10 +242,9 @@ class SVUploader: UIView {
         // Offset the image view
         let scale = (60.0/180.0)*containerView.frame.width
         endImageView.frame = containerView.frame.insetBy(dx: scale, dy: scale)
-        print(containerView.frame.width)
         endImageView.frame.center = endImageView.superview!.bounds.center
         
-        // Transform container view back into a circle
+        // Transform container view back into a circle (Uses UIView extension listed at the bottom of the file)
         containerView.transformToCircle()
         
         // Scale font size
@@ -272,7 +283,7 @@ class SVUploader: UIView {
     }
     
     /** Ends the upload. Use the success parameter to specify whether the success or error view should be shown. */
-    func endUpload(success: Bool, message: String) {
+    func endUpload(success: Bool) {
         // Set the initial properties
         isUploading = false
         self.success = success
@@ -307,11 +318,11 @@ class SVUploader: UIView {
         CATransaction.commit()
         
         // Animate the endView out and return to the original state
-        UIView.animate(withDuration: 1, animations: { 
+        UIView.animate(withDuration: 1, animations: {
             self.loadingLabel.alpha = 0
             self.endView.alpha = 1
         }) { (completion) in
-            UIView.animate(withDuration: 1, delay: 2, options: [], animations: {
+            UIView.animate(withDuration: 1, delay: self.messageDuration, options: [], animations: {
                 self.overlayView.alpha = 0
                 self.blurView.alpha = 0
                 self.endView.alpha = 0
