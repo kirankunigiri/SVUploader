@@ -93,6 +93,10 @@ There are several different initializers for different needs. Use the last one i
 
 Now, let's take a look at how to customize this experience. SVUploader is extremely modular; take a look at its view structure. The following views can be swapped out with your own for a custom look - just set the property equal to your own custom view.
 
+Here's a hierarchy view of SVUploader.
+
+ ![Upload](Hierarchy.png)
+
 `contentView` - The "content" or image of the uploader view. If you want more than just a thumbnail picture to show up, you can customize it by replacing it with your own view.
 
 `overlayView` - The view that overlays the `contentView`. By default, it is a dark overlay or blur.
