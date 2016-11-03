@@ -1,6 +1,10 @@
-# SVUploader
-A view class for iOS that makes uploading easy and beautiful.
+ ![Upload](Banner.png)
+ 
+# SVUploader ![License MIT](https://img.shields.io/badge/platform-iOS-orange.svg)
+![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
+![License MIT](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
+A view class for iOS that makes uploading easy and beautiful.
 
 
 ## Installation
@@ -14,10 +18,34 @@ Just drag the SVUploader.swift file to your project, and you'll be all set to go
 SVUploader takes care of the visual part of the upload part of process for you; all you have to do is instantiate an SVUploader, place it on the screen, and give it the progress of your upload. It's that simple! Let's go ahead and start with an example.
 
 
+### Use it! (Quick and Simple)
+
+Now, if you just want to use it straight out of the box, it's extremely simple.
+
+```swift
+// Create the uploader view
+let uploaderView = SVUploader(frame: uploaderFrame)
+
+// Set the image you want to upload
+uploaderView.image = imageThatIWantToUpload
+
+// Start the upload
+uploaderView.startUpload()
+
+// Update the progress in your update code
+uploaderView.progress = newProgress
+
+// End the upload, and specify whether it succeeded or failed
+self.uploaderView.endUpload(success: true)
+```
+SVUploader will automatically present the appropriate view depending on whether or not there was an error.
+
+The following are about the more detailed parts of SVUploader that you can customize to create a unique experience.
+
 
 ### Properties
 
-SVUploader has several properties that you can change. The default values are specified, and they're set to one variation of what I think looks nice. Some of these variables can only be set using the initializers and cannot be changed later, so check out that section next
+SVUploader has several properties that you can change. The default values are specified, and they're set to one variation of what I think looks nice. Some of these variables can only be set using the initializers and cannot be changed later, so check out that section next.
 
 `isUploading (read-only)` - Whether or not the UI is currently uploading. This is internally managed and should only be read by the user.
 
@@ -64,27 +92,6 @@ Get real fancy. You can customize all of the UI properties to your own needs.
 
 The initializer only variables can be set here. To keep it short, I've only included those, but you can still change the rest of the properties later.
 `init(useBlur: Bool, useShadow: Bool, useSmoothAnimation: Bool)`
-
-
-
-### Use it! (Quick and Simple)
-
-Now, if you just want to use it straight out of the box, it's extremely simple.
-
-```swift
-// Set the image you want to upload
-uploaderView.image = imageThatIWantToUpload
-
-// Start the upload
-uploaderView.startUpload()
-
-// Update the progress in your update code
-uploaderView.progress = newProgress
-
-// End the upload, and specify whether it succeeded or failed
-self.uploaderView.endUpload(success: true)
-```
-SVUploader will automatically present the appropriate view depending on whether or not there was an error.
 
 ### Use it! (Advanced Customization)
 

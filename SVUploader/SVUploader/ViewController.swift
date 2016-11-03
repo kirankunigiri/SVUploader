@@ -34,7 +34,7 @@ class ViewController: UIViewController {
         self.view.addSubview(uploaderView)
         
         // Set the image
-        uploaderView.image = UIImage(named: "profile")
+        uploaderView.image = UIImage(named: "galaxy")
     }
 
     @IBAction func uploadButtonPressed(_ sender: UIButton) {
