@@ -21,7 +21,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4gj-qD-IJt">
-                                <rect key="frame" x="158.5" y="613" width="58" height="34"/>
+                                <rect key="frame" x="158.5" y="456.5" width="58" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <state key="normal" title="Upload"/>
                                 <connections>
@@ -31,8 +31,8 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="4gj-qD-IJt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5Mt-1a-UCn"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="4gj-qD-IJt" secondAttribute="bottom" constant="20" id="Na0-A2-sau"/>
+                            <constraint firstItem="4gj-qD-IJt" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="140" id="2tB-mQ-6LC"/>
+                            <constraint firstItem="4gj-qD-IJt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="cZE-JB-3A6"/>
                         </constraints>
                     </view>
                 </viewController>

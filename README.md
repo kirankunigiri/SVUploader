@@ -60,7 +60,7 @@ SVUploader has several properties that you can change. The default values are sp
 
 `lineColor (dark purple)` - The color of the circular loader.
 
-`lineWidth (15)` - The line width of the circular loader.
+`lineWidth (12)` - The line width of the circular loader.
 
 `overlayOpacity (0.6)` - The opacity of the dark overlay effect (only applicable if `useBlur` is false).
 

@@ -78,7 +78,7 @@ class SVUploader: UIView {
     }
     
     /** The width of the circular loader */
-    var lineWidth: CGFloat = 15 {
+    var lineWidth: CGFloat = 12 {
         didSet { circlePathLayer.lineWidth = lineWidth }
     }
     
