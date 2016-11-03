@@ -6,12 +6,13 @@
 
 A view class for iOS that makes uploading easy and beautiful.
 
+## Demo
+
+ ![Upload](SVUploaderDemo.gif)
 
 ## Installation
 
 Just drag the SVUploader.swift file to your project, and you'll be all set to go.
-
-
 
 ## Guide
 
