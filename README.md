@@ -1,6 +1,6 @@
  ![Upload](Banner.png)
  
-# SVUploader ![License MIT](https://img.shields.io/badge/platform-iOS-orange.svg)
+# SVUploader ![License MIT](https://img.shields.io/badge/platform-iOS-677cf4.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 ![License MIT](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
@@ -78,20 +78,15 @@ SVUploader has several properties that you can change. The default values are sp
 
 ### Initializers
 
-Now, on to the fun part - actually making one of these views! It is important to use the initializer you need, because some of the variables (as mentioned above), can only be changed in an initializer.
+There are several different initializers for different needs. Use the last one if you want to change variables that can only be set with the initializer.
 
+`init(frame: CGRect)` - The standard initalizer. It sets everything up but you can still change some properties later.
 
-The standard initalizer. It sets everything up but you can still change some properties later.
-`init(frame: CGRect)`
+`init(lineColor: UIColor, lineWidth: CGFloat)` - The most commonly used one. You can customize the most important part of the loader - the circular loader.
 
-The most commonly used one. You can customize the most important part of the loader - the circular loader.
-`init(lineColor: UIColor, lineWidth: CGFloat)`
+`init(lineColor: UIColor, lineWidth: CGFloat, overlayOpacity: CGFloat, mainFont: UIFont)` - Get real fancy. You can customize all of the UI properties to your own needs.
 
-Get real fancy. You can customize all of the UI properties to your own needs.
-`init(lineColor: UIColor, lineWidth: CGFloat, overlayOpacity: CGFloat, mainFont: UIFont)`
-
-The initializer only variables can be set here. To keep it short, I've only included those, but you can still change the rest of the properties later.
-`init(useBlur: Bool, useShadow: Bool, useSmoothAnimation: Bool)`
+`init(useBlur: Bool, useShadow: Bool, useSmoothAnimation: Bool)` - The initializer only variables can be set here. To keep it short, I've only included those, but you can still change the rest of the properties later.
 
 ### Use it! (Advanced Customization)
 
