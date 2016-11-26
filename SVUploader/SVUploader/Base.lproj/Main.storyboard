@@ -5,13 +5,14 @@
     </device>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Code View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SVUploader" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="CodeViewController" customModule="SVUploader" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -38,6 +39,51 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+        </scene>
+        <!--Storyboard View Controller-->
+        <scene sceneID="ZH5-yM-ReK">
+            <objects>
+                <viewController id="PIq-79-0km" customClass="StoryboardViewController" customModule="SVUploader" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VmX-io-xw4"/>
+                        <viewControllerLayoutGuide type="bottom" id="1Xz-4w-KZF"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hGu-yv-t55">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OF3-sa-dOB" customClass="SVUploader" customModule="SVUploader" customModuleProvider="target">
+                                <rect key="frame" x="116.5" y="263" width="141" height="140"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="140" id="Pxw-oP-RYd"/>
+                                    <constraint firstAttribute="width" secondItem="OF3-sa-dOB" secondAttribute="height" multiplier="1:1" constant="1" id="cqK-yM-JYF"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6rA-dA-sXr">
+                                <rect key="frame" x="158" y="613" width="58" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="Upload"/>
+                                <connections>
+                                    <action selector="uploadButtonPressed:" destination="PIq-79-0km" eventType="touchUpInside" id="Ufs-Oe-eVK"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="1Xz-4w-KZF" firstAttribute="top" secondItem="6rA-dA-sXr" secondAttribute="bottom" constant="20" id="NG4-eQ-uQq"/>
+                            <constraint firstItem="OF3-sa-dOB" firstAttribute="centerY" secondItem="hGu-yv-t55" secondAttribute="centerY" id="fdW-yE-VHC"/>
+                            <constraint firstItem="OF3-sa-dOB" firstAttribute="centerX" secondItem="hGu-yv-t55" secondAttribute="centerX" id="fpo-zf-ctx"/>
+                            <constraint firstItem="6rA-dA-sXr" firstAttribute="centerX" secondItem="hGu-yv-t55" secondAttribute="centerX" id="mVK-wV-9YA"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="uploaderView" destination="OF3-sa-dOB" id="aLA-Sr-D0A"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CYa-Ub-DPP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="892" y="36"/>
         </scene>
     </scenes>
 </document>

@@ -1,5 +1,5 @@
  ![Upload](Banner.png)
- 
+
 # SVUploader ![License MIT](https://img.shields.io/badge/platform-iOS-677cf4.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 ![License MIT](https://img.shields.io/badge/build-passing-brightgreen.svg)
@@ -62,6 +62,10 @@ SVUploader has several properties that you can change. The default values are sp
 
 `lineWidth (12)` - The line width of the circular loader.
 
+`borderColor (dark gray)` - The border color.
+
+`borderWidth (0)` - The border width.
+
 `overlayOpacity (0.6)` - The opacity of the dark overlay effect (only applicable if `useBlur` is false).
 
 `mainFont (Avenir-Medium Size 30)` - The font of the percentage text in the uploader.
@@ -79,13 +83,13 @@ SVUploader has several properties that you can change. The default values are sp
 
 ### Initializers
 
-There are several different initializers for different needs. Use the last one if you want to change variables that can only be set with the initializer.
+There are several different initializers for different needs. Not all properties can be set using an initializer, so be sure to check them above and change any if needed after initializing a view. Use the last one if you want to change variables that can only be set with the initializer.
 
 `init(frame: CGRect)` - The standard initalizer. It sets everything up but you can still change some properties later.
 
 `init(lineColor: UIColor, lineWidth: CGFloat)` - The most commonly used one. You can customize the most important part of the loader - the circular loader.
 
-`init(lineColor: UIColor, lineWidth: CGFloat, overlayOpacity: CGFloat, mainFont: UIFont)` - Get real fancy. You can customize all of the UI properties to your own needs.
+`init(lineColor: UIColor, lineWidth: CGFloat, borderColor: UIColor, borderWidth: CGFloat` - A little fancier. You can now add in a border as well.
 
 `init(useBlur: Bool, useShadow: Bool, useSmoothAnimation: Bool)` - The initializer only variables can be set here. To keep it short, I've only included those, but you can still change the rest of the properties later.
 
@@ -105,7 +109,7 @@ Here's a hierarchy view of SVUploader.
 
 `endView` - The view that shows up after the upload has finished. By default, it shows an error/success image.
 
-If you don't want to create a brand new view from scratch, and just want to modify some of the details such as the blur effect or image size, you can take a look at all the views the class uses by reading the source code.
+If you don't want to create a brand new view from scratch, and just want to modify some of the details such as the blur effect or image size, you can take a look at all of the views the class uses by reading the source code.
 
 ## Coming Soon
 

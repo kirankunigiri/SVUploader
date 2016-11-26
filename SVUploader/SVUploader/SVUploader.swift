@@ -1,6 +1,6 @@
 //
 //  SVUploader.swift
-//  AdvancedAnimation
+//  SVUploader
 //
 //  Created by Kiran Kunigiri on 10/16/16.
 //  Copyright © 2016 Kiran. All rights reserved.
@@ -39,6 +39,7 @@ class SVUploader: UIView {
     
     // The circle is separate and is outside the container view
     var circlePathLayer = CAShapeLayer()
+    var circleBorderLayer = CAShapeLayer()
     
     /** The image of the uploader. Can be set to nil if an image is not being used. */
     var image: UIImage? {
@@ -80,6 +81,16 @@ class SVUploader: UIView {
     /** The width of the circular loader */
     var lineWidth: CGFloat = 12 {
         didSet { circlePathLayer.lineWidth = lineWidth }
+    }
+    
+    /** The color of the border */
+    var borderColor = UIColor(red:0.55, green:0.55, blue:0.55, alpha:1.0) {
+        didSet { circleBorderLayer.strokeColor = borderColor.cgColor }
+    }
+    
+    /** The width of the border */
+    var borderWidth: CGFloat = 0 {
+        didSet { circleBorderLayer.lineWidth = borderWidth }
     }
     
     /** The overlay opacity of the view during uploading */
@@ -133,7 +144,9 @@ class SVUploader: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        print("using storyboard")
         setup()
+        layoutSubviews()
     }
     
     init(lineColor: UIColor, lineWidth: CGFloat) {
@@ -145,13 +158,13 @@ class SVUploader: UIView {
         setup()
     }
     
-    init(lineColor: UIColor, lineWidth: CGFloat, overlayOpacity: CGFloat, mainFont: UIFont) {
+    init(lineColor: UIColor, lineWidth: CGFloat, borderColor: UIColor, borderWidth: CGFloat) {
         super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
         
         self.lineColor = lineColor
         self.lineWidth = lineWidth
-        self.overlayOpacity = overlayOpacity
-        self.mainFont = mainFont
+        self.borderColor = borderColor
+        self.borderWidth = borderWidth
         
         setup()
     }
@@ -180,6 +193,7 @@ class SVUploader: UIView {
         
         // Add all views and layers in order
         self.layer.addSublayer(circlePathLayer)
+        self.layer.addSublayer(circleBorderLayer)
 
         if useShadow { self.addSubview(shadowView) }
         
@@ -223,6 +237,13 @@ class SVUploader: UIView {
         circlePathLayer.strokeColor = lineColor.cgColor
         circlePathLayer.fillColor = UIColor.clear.cgColor
         circlePathLayer.speed = progressAnimationSpeed
+        
+        // Circle Path Layer
+        circleBorderLayer.strokeStart = 0
+        circleBorderLayer.strokeEnd = 1
+        circleBorderLayer.lineWidth = borderWidth
+        circleBorderLayer.strokeColor = borderColor.cgColor
+        circleBorderLayer.fillColor = UIColor.clear.cgColor
     }
     
     override func layoutSubviews() {
@@ -230,16 +251,21 @@ class SVUploader: UIView {
         
         // Important: To center a view, set its frame.center to superview!.bounds.center
         
-        // Offset the ring by lineWidth/2
+        // Offset the loader ring by lineWidth/2
         self.circlePathLayer.frame = self.bounds
         let circleFrame = circlePathLayer.frame.insetBy(dx: lineWidth/2, dy: lineWidth/2)
         circlePathLayer.path = UIBezierPath(ovalIn: circleFrame).cgPath
         
-        // Offset the content view by lineWidth
-        containerView.frame = self.frame.insetBy(dx: lineWidth, dy: lineWidth)
+        // Offset the border ring by (lineWidth + borderWidth/20
+        self.circleBorderLayer.frame = self.bounds
+        let borderFrame = circleBorderLayer.frame.insetBy(dx: lineWidth + borderWidth/2, dy: lineWidth + borderWidth/2)
+        circleBorderLayer.path = UIBezierPath(ovalIn: borderFrame).cgPath
+        
+        // Offset the content view by (lineWidth + borderWidth)
+        containerView.frame = self.frame.insetBy(dx: lineWidth + borderWidth, dy: lineWidth + borderWidth)
         containerView.frame.center = containerView.superview!.bounds.center
         
-        // Offset the image view
+        // Offset the image view by a scale factor
         let scale = (60.0/180.0)*containerView.frame.width
         endImageView.frame = containerView.frame.insetBy(dx: scale, dy: scale)
         endImageView.frame.center = endImageView.superview!.bounds.center
