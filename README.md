@@ -1,4 +1,4 @@
- ![Upload](Banner.png)
+ ![Upload](Images/Banner.png)
 
 # SVUploader ![License MIT](https://img.shields.io/badge/platform-iOS-677cf4.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
@@ -8,7 +8,7 @@ A view class for iOS that makes uploading easy and beautiful.
 
 ## Demo
 
- ![Upload](SVUploaderDemo.gif)
+ ![Upload](Images/SVUploaderDemo.gif)
 
 ## Installation
 
@@ -99,7 +99,7 @@ Now, let's take a look at how to customize this experience. SVUploader is extrem
 
 Here's a hierarchy view of SVUploader.
 
- ![Upload](Hierarchy.png)
+ ![Upload](Images/Hierarchy.png)
 
 `contentView` - The "content" or image of the uploader view. If you want more than just a thumbnail picture to show up, you can customize it by replacing it with your own view.
 
