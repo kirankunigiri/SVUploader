@@ -1,8 +1,8 @@
  ![Upload](Images/Banner.png)
 
-# SVUploader ![License MIT](https://img.shields.io/badge/platform-iOS-677cf4.svg)
+# SVUploader ![Platform](https://img.shields.io/badge/platform-iOS-677cf4.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
-![License MIT](https://img.shields.io/badge/build-passing-brightgreen.svg)
+![Build Passing](https://img.shields.io/badge/build-passing-brightgreen.svg)
 
 A view class for iOS that makes uploading easy and beautiful.
 
