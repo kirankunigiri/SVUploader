@@ -29,7 +29,7 @@ class CodeViewController: UIViewController {
         let uploaderFrame = CGRect(x: 0, y: 0, width: 200, height: 200)
         
         // Example of the default initializer setup
-        uploaderView = SVUploader(frame: uploaderFrame)
+        // uploaderView = SVUploader(frame: uploaderFrame)
         
         // Example of the common initialzer setup
         // let customLineColor = UIColor(red:0.30, green:0.49, blue:0.95, alpha:1.0)
@@ -39,7 +39,7 @@ class CodeViewController: UIViewController {
         // uploaderView = SVUploader(lineColor: customLineColor, lineWidth: 12, borderColor: UIColor.lightGray, borderWidth: 5)
         
         // Example of the initializer-only variable setup.
-        // uploaderView = SVUploader(useBlur: true, useShadow: true, useSmoothAnimation: true)
+         uploaderView = SVUploader(useBlur: true, useShadow: true, useSmoothAnimation: true)
         
         // Set the frame, center the view, and add it to the superview
         uploaderView.frame = uploaderFrame

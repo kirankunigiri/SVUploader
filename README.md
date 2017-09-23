@@ -8,7 +8,10 @@ A view class for iOS that makes uploading easy and beautiful.
 
 ## Demo
 
- ![Upload](Images/SVUploaderDemo.gif)
+SVUploader is fully customizable - check out 2 demos.
+
+![Demo 1](Images/demo1.gif)
+![Demo 2](Images/demo2.gif)
 
 ## Installation
 

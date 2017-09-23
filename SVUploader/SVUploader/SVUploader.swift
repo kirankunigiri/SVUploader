@@ -104,7 +104,7 @@ class SVUploader: UIView {
     }
     
     /** The duration of the message to be displayed at the end of the upload */
-    var messageDuration: Double = 2.0
+    var messageDuration: Double = 1
     
     /* The progress percentage of the upload. Update this variable with a decimal to update the uploader */
     var progress: CGFloat {
@@ -190,7 +190,6 @@ class SVUploader: UIView {
             blurEffect = UIBlurEffect(style: .dark)
             blurView = UIVisualEffectView(effect: blurEffect)
             blurView.alpha = 0
-            useBlur = false
         }
         
         // Add all views and layers in order
@@ -201,8 +200,11 @@ class SVUploader: UIView {
         
         self.addSubview(containerView)
         containerView.addSubview(contentView)
-        if useBlur { containerView.addSubview(blurView) }
-        containerView.addSubview(overlayView)
+        if useBlur {
+            containerView.addSubview(blurView)
+        } else {
+            containerView.addSubview(overlayView)
+        }
         containerView.addSubview(loadingLabel)
         containerView.addSubview(endView)
         contentView.addSubview(contentImageView)
