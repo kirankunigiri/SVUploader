@@ -61,6 +61,8 @@ class SVUploader: UIView {
     
     /** Whether or not the uploader is currently uploading. Read only. */
     var isUploading: Bool = false
+    /** Whether or not the uploader is currently animating. Read only. Different from `isUploading` because it includes the end animation duration. */
+    var isAnimating: Bool = false
     
     /** The speed of the animation between progress value changes. This number should be changed depending on the length of intervals between each progress percentage update. For larger intervals, a lower speed is recommended for a smoother animation. For shorter intervals, a higher speed is recommended to prevent slow animation and lag. Default value = 1 */
     var progressAnimationSpeed: Float = 2 {
@@ -297,6 +299,7 @@ class SVUploader: UIView {
     func startUpload() {
         // Set the initial properties
         isUploading = true
+        isAnimating = true
         progress = 0
         
         // Animate the loading views in
@@ -352,7 +355,9 @@ class SVUploader: UIView {
                 self.overlayView.alpha = 0
                 self.blurView.alpha = 0
                 self.endView.alpha = 0
-            }, completion: nil)
+            }, completion: { (completion) in
+                self.isAnimating = false
+            })
         }
         
     }

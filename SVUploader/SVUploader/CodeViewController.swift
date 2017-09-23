@@ -51,12 +51,14 @@ class CodeViewController: UIViewController {
     }
 
     @IBAction func uploadButtonPressed(_ sender: UIButton) {
+        if uploaderView.isAnimating { return }
+        
         uploaderView.startUpload()
         timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(time), userInfo: nil, repeats: true)
     }
     
     // Updates the progress bar of the uploader view. In reality you would want to connect this to your backend and update it.
-    func time() {
+    @objc func time() {
         self.uploaderView.progress += 0.003
         if self.uploaderView.progress == 1 {
             self.timer.invalidate()
